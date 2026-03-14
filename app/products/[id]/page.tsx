@@ -43,12 +43,13 @@ export default function ProductDetailPage() {
     try {
       await addToCart(product._id, qty);
       toast.success('Item added to cart');
-    } catch (error) {
-      toast.error(error.response?.data?.message || 'Failed to add to cart');
+    } catch (error: unknown) {
+      const err = error as { response?: { data?: { message?: string } } };
+      toast.error(err?.response?.data?.message || 'Failed to add to cart');
     }
   };
 
-  const handleSubmitReview = async (e) => {
+  const handleSubmitReview = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!user) {
       toast.error('Please login to submit a review');
@@ -59,8 +60,9 @@ export default function ProductDetailPage() {
       toast.success('Review submitted');
       setComment('');
       fetchProduct();
-    } catch (error) {
-      toast.error(error.response?.data?.message || 'Failed to submit review');
+    } catch (error: unknown) {
+      const err = error as { response?: { data?: { message?: string } } };
+      toast.error(err?.response?.data?.message || 'Failed to submit review');
     }
   };
 

@@ -13,15 +13,16 @@ export default function LoginPage() {
   const { login } = useAuth();
   const router = useRouter();
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setLoading(true);
     try {
       await login(email, password);
       toast.success('Login successful');
       router.push('/');
-    } catch (error) {
-      toast.error(error.response?.data?.message || 'Login failed');
+    } catch (error: unknown) {
+      const err = error as { response?: { data?: { message?: string } } };
+      toast.error(err?.response?.data?.message || 'Login failed');
     } finally {
       setLoading(false);
     }
@@ -57,7 +58,7 @@ export default function LoginPage() {
           </button>
         </form>
         <p style={styles.registerLink}>
-          Don't have an account? <Link href="/register">Register here</Link>
+          Don&apos;t have an account? <Link href="/register">Register here</Link>
         </p>
       </div>
     </div>

@@ -7,6 +7,15 @@ import { useAuth } from '../../context/AuthContext';
 import api from '../../lib/api';
 import { toast } from 'react-toastify';
 
+interface CartItem {
+  product: string;
+  image: string;
+  name: string;
+  price: number;
+  qty: number;
+  countInStock: number;
+}
+
 export default function CheckoutPage() {
   const { cart, clearCart } = useCart();
   const { user } = useAuth();
@@ -34,7 +43,7 @@ export default function CheckoutPage() {
   const tax = subtotal * 0.18;
   const total = subtotal + shipping + tax;
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setLoading(true);
     try {
@@ -51,8 +60,9 @@ export default function CheckoutPage() {
       await clearCart();
       toast.success('Order placed successfully!');
       router.push('/orders');
-    } catch (error) {
-      toast.error(error.response?.data?.message || 'Failed to place order');
+    } catch (error: unknown) {
+      const err = error as { response?: { data?: { message?: string } } };
+      toast.error(err?.response?.data?.message || 'Failed to place order');
     } finally {
       setLoading(false);
     }
@@ -125,7 +135,7 @@ export default function CheckoutPage() {
           </div>
           <div style={styles.summary}>
             <h2>Order Summary</h2>
-            {cart.items.map((item) => (
+            {cart.items.map((item: CartItem) => (
               <div key={item.product} style={styles.summaryItem}>
                 <span>{item.name} x {item.qty}</span>
                 <span>₹{(item.price * item.qty).toLocaleString()}</span>

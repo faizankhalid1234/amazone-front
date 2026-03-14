@@ -1,11 +1,20 @@
 'use client';
 
-import { useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useCart } from '../../context/CartContext';
 import { useAuth } from '../../context/AuthContext';
 import { toast } from 'react-toastify';
 import Link from 'next/link';
+
+interface CartItem {
+  product: string;
+  image: string;
+  name: string;
+  price: number;
+  qty: number;
+  countInStock: number;
+}
 
 export default function CartPage() {
   const { cart, updateCartItem, removeFromCart } = useCart();
@@ -18,7 +27,7 @@ export default function CartPage() {
     }
   }, [user, router]);
 
-  const handleUpdateQty = async (productId, qty) => {
+  const handleUpdateQty = async (productId: string, qty: number) => {
     try {
       await updateCartItem(productId, qty);
     } catch (error) {
@@ -26,7 +35,7 @@ export default function CartPage() {
     }
   };
 
-  const handleRemove = async (productId) => {
+  const handleRemove = async (productId: string) => {
     try {
       await removeFromCart(productId);
       toast.success('Item removed from cart');
@@ -57,7 +66,7 @@ export default function CartPage() {
       ) : (
         <div style={styles.cartContainer}>
           <div style={styles.itemsSection}>
-            {cart.items.map((item) => (
+            {cart.items.map((item: CartItem) => (
               <div key={item.product} style={styles.cartItem}>
                 <img src={item.image} alt={item.name} style={styles.itemImage} />
                 <div style={styles.itemDetails}>
@@ -119,7 +128,7 @@ export default function CartPage() {
   );
 }
 
-const styles = {
+const styles: Record<string, React.CSSProperties> = {
   container: {
     maxWidth: '1200px',
     margin: '0 auto',

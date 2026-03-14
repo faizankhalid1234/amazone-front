@@ -15,7 +15,7 @@ export default function RegisterPage() {
   const { register } = useAuth();
   const router = useRouter();
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (password !== confirmPassword) {
       toast.error('Passwords do not match');
@@ -26,8 +26,9 @@ export default function RegisterPage() {
       await register(name, email, password);
       toast.success('Registration successful');
       router.push('/');
-    } catch (error) {
-      toast.error(error.response?.data?.message || 'Registration failed');
+    } catch (error: unknown) {
+      const err = error as { response?: { data?: { message?: string } } };
+      toast.error(err?.response?.data?.message || 'Registration failed');
     } finally {
       setLoading(false);
     }

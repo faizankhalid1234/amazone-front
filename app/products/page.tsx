@@ -1,11 +1,11 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { Suspense, useEffect, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
 import ProductCard from '../../components/ProductCard';
 import api from '../../lib/api';
 
-export default function ProductsPage() {
+function ProductsContent() {
   const searchParams = useSearchParams();
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -177,3 +177,11 @@ const styles = {
     fontSize: '16px',
   },
 };
+
+export default function ProductsPage() {
+  return (
+    <Suspense fallback={<div style={styles.loading}>Loading products...</div>}>
+      <ProductsContent />
+    </Suspense>
+  );
+}
