@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import Image from 'next/image';
 import { useAuth } from '../context/AuthContext';
 import { useCart } from '../context/CartContext';
 import { useRouter } from 'next/navigation';
@@ -28,7 +29,7 @@ export default function Header() {
     <header style={styles.header}>
       <div style={styles.container}>
         <Link href="/" style={styles.logo}>
-          <span style={styles.logoText}>amazon</span>
+          <Image src="/logo.svg" alt="Amazone" width={190} height={49} priority />
         </Link>
 
         <form onSubmit={handleSearch} style={styles.searchForm}>
@@ -94,13 +95,9 @@ const styles = {
     padding: '0 20px',
   },
   logo: {
-    fontSize: '24px',
-    fontWeight: 'bold',
     textDecoration: 'none',
-    color: 'white',
-  },
-  logoText: {
-    color: '#FF9900',
+    display: 'inline-flex',
+    alignItems: 'center',
   },
   searchForm: {
     flex: 1,
