@@ -1,4 +1,4 @@
-import type { Metadata } from 'next'
+import type { Metadata, Viewport } from 'next'
 import './globals.css'
 import { AuthProvider } from '../context/AuthContext'
 import { CartProvider } from '../context/CartContext'
@@ -38,6 +38,16 @@ export const metadata: Metadata = {
   alternates: {
     canonical: 'https://amazone-front.vercel.app',
   },
+  manifest: '/manifest.webmanifest',
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: 'black-translucent',
+    title: 'Amazone',
+  },
+}
+
+export const viewport: Viewport = {
+  themeColor: '#131921',
 }
 
 export default function RootLayout({
